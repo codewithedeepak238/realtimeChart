@@ -11,6 +11,7 @@ let myChart = new Chart(ctx, {
     datasets: [{
       label: 'Bitcoin Prices',
       data: prices,
+      lineTension: 0.5,
       borderWidth: 1
     }]
   },
@@ -27,10 +28,8 @@ async function getData(){
   const data = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
   const res = await data.json();
   prices.push(res.bpi.USD.rate_float)
-  label.push(res.bpi.USD.symbol)
+  label.push(res.time.updated)
   myChart.update();
-  console.log(mydate)
-  // console.log(label)
 }
 
 setInterval(getData, 5000)
