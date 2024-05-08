@@ -1,20 +1,36 @@
 const ctx = document.getElementById('myChart');
 
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+const label = [];
+const prices = []
+
+
+let myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: label,
+    datasets: [{
+      label: 'Bitcoin Prices',
+      data: prices,
+      borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
       }
     }
-  });
+  }
+})
+
+async function getData(){
+  const data = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
+  const res = await data.json();
+  prices.push(res.bpi.USD.rate_float)
+  label.push(res.bpi.USD.symbol)
+  myChart.update();
+  console.log(mydate)
+  // console.log(label)
+}
+
+setInterval(getData, 5000)
